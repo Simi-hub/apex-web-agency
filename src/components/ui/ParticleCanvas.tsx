@@ -16,13 +16,13 @@ interface Particle {
 }
 
 export default function ParticleCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
-    const canvasEl = canvasRef.current
-    if (!canvasEl) return
+    const canvas = canvasRef.current
+    if (!canvas) return
 
-    const ctx = canvasEl.getContext('2d')
+    const ctx = canvas.getContext('2d')
     if (!ctx) return
 
     let W = 0
@@ -33,8 +33,11 @@ export default function ParticleCanvas() {
     const particles: Particle[] = []
 
     function resize() {
-      W = canvasEl.width = window.innerWidth
-      H = canvasEl.height = window.innerHeight
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+
+      W = canvas.width
+      H = canvas.height
     }
 
     resize()
@@ -90,7 +93,6 @@ export default function ParticleCanvas() {
           : 'rgb(168,168,179)'
 
         ctx.shadowBlur = 4
-
         ctx.shadowColor = p.gold
           ? 'rgba(201,162,39,0.8)'
           : 'rgba(168,168,179,0.5)'
